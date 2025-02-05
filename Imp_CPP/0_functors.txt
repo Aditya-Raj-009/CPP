@@ -1,0 +1,168 @@
+A functor (or function object) in C++ is an object that can be called as if it were a function. Functors are created by overloading the operator() in a class. This allows an instance of the class to be used with the same syntax as a function call.
+
+Functors are useful when you want objects that can encapsulate both data and behavior (the operation to be performed), and they are particularly useful in algorithms, such as those provided by the Standard Template Library (STL), because they allow flexible customization of operations.
+
+Key Points of Functors:
+Functors are objects, but they behave like functions.
+They can hold state between calls, unlike regular functions.
+They are more flexible than function pointers or simple function references because they can maintain member variables.
+They are commonly used in algorithms like std::sort(), std::for_each(), or any other higher-order function where custom behavior is needed.
+
+
+Basic Example of a Functor
+Here is a simple example of a functor in C++:
+
+#include <iostream>
+
+// Define a class that overloads the operator()
+class Increment {
+    int num;  // The state the functor holds
+
+public:
+    Increment(int n) : num(n) {}  // Constructor to initialize the functor's state
+
+    // Overload the function call operator ()
+    int operator()(int x) const {
+        return x + num;  // Add the state to the argument and return
+    }
+};
+
+int main() {
+    Increment incrementByFive(5);  // Create a functor that adds 5
+
+    std::cout << "Increment 10 by 5: " << incrementByFive(10) << std::endl;  // Call it like a function
+    return 0;
+}
+
+
+Explanation:
+Class Definition: The class Increment has a constructor that takes an integer (n) and stores it as a member variable (num).
+Overloading operator(): By overloading operator(), we turn the object of Increment into a functor, allowing it to be called like a function.
+Using the Functor: The functor incrementByFive is called like a function with an argument 10, and it returns 10 + 5 = 15.
+
+
+Functors with State
+Functors can store state (data) between calls, unlike ordinary functions or function pointers. This allows them to be very flexible and powerful in specific contexts, like in algorithms.
+
+Example: Using a Functor with std::for_each
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+// Functor that increments each element by a fixed value
+class Increment {
+    int num;
+
+public:
+    Increment(int n) : num(n) {}
+
+    // Overload function call operator to modify elements in the collection
+    void operator()(int &x) const {
+        x += num;
+    }
+};
+
+int main() {
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+
+    std::cout << "Before incrementing: ";
+    for (int i : vec) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    // Use std::for_each with a functor
+    std::for_each(vec.begin(), vec.end(), Increment(3));  // Increment each element by 3
+
+    std::cout << "After incrementing: ";
+    for (int i : vec) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+
+Explanation:
+
+Increment(3) is a functor that increments each element of the vector by 3.
+std::for_each iterates through each element in the vector, applying the Increment functor to each element.
+Advantages of Functors Over Function Pointers:
+Flexibility: A functor can hold and maintain a state across calls, while a function pointer cannot.
+Type Safety: Functors provide better type safety as they can be templated.
+Inline Execution: The function code can be inlined, which can result in better performance.
+Customization: Functors can be customized for different behaviors and store information such as counters, transformations, or other data used during the operation.
+Functors in STL Algorithms
+The STL provides several generic algorithms that work with functors. Here are some of them:
+
+std::sort: Sorts a range of elements.
+std::for_each: Applies a functor to every element in a range.
+std::transform: Applies a functor to every element in one or two ranges and stores the result in another range.
+
+
+Functors with std::sort:
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+// Functor to sort in descending order
+class Descending {
+public:
+    bool operator()(int a, int b) const {
+        return a > b;  // Return true if a should come before b
+    }
+};
+
+int main() {
+    std::vector<int> vec = {3, 1, 4, 1, 5, 9, 2};
+
+    std::sort(vec.begin(), vec.end(), Descending());  // Sort in descending order
+
+    for (int i : vec) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+
+In this example, the functor Descending defines custom sorting logic that sorts the vector in descending order.
+
+Templated Functors
+Functors can also be templated, allowing them to be used with different data types:
+
+
+#include <iostream>
+
+// Templated functor that multiplies a number by a fixed value
+template<typename T>
+class Multiply {
+    T factor;
+
+public:
+    Multiply(T f) : factor(f) {}
+
+    T operator()(T x) const {
+        return x * factor;
+    }
+};
+
+int main() {
+    Multiply<int> timesThree(3);
+    std::cout << "3 * 4 = " << timesThree(4) << std::endl;  // Output: 12
+
+    Multiply<double> timesPi(3.14159);
+    std::cout << "3.14159 * 2 = " << timesPi(2) << std::endl;  // Output: 6.28318
+
+    return 0;
+}
+
+
+Differences Between Functors and Lambdas:
+Functors: Require a class definition and operator() to be overloaded.
+Lambdas: Provide a more concise way to create function objects, but are often less customizable.
+

@@ -1,0 +1,108 @@
+All methods of string in cpp
+
+In C++, strings can be handled using the std::string class from the Standard Library, which provides a wide range of methods to work with.
+ Below is a list of the most commonly used methods for std::string and a brief description of what each does.
+
+1. Constructors
+std::string str; - Default constructor.
+std::string str("Hello"); - Initialize with a C-string.
+std::string str(other_str); - Copy constructor.
+std::string str(count, 'c'); - Create a string with count copies of character 'c'.
+
+2. Capacity Methods
+size() or length() - Returns the number of characters in the string.
+max_size() - Returns the maximum number of characters that the string can hold.
+capacity() - Returns the current capacity of the string.
+resize(n) - Resizes the string to contain n characters.
+clear() - Clears the string, making it empty.
+empty() - Returns true if the string is empty.
+shrink_to_fit() - Reduces the capacity of the string to fit its size.
+
+3. Element Access
+operator[] or at(pos) - Access a character at position pos (throws out_of_range if invalid with at()).
+front() - Returns the first character of the string.
+back() - Returns the last character of the string.
+data() or c_str() - Returns a pointer to the underlying C-string representation.
+
+4. Modifiers
+assign(str) - Assigns a new value to the string from another string, C-string, or substring.
+push_back(c) - Appends the character c to the string.
+pop_back() - Removes the last character from the string.
+append(str) - Appends str or a substring of str to the string.
+insert(pos, str) - Inserts str at position pos.
+erase(pos, len) - Erases characters from position pos of length len.
+replace(pos, len, str) - Replaces a substring from position pos of length len with str.
+swap(other) - Swaps the contents of the string with another string.
+
+5. String Operations
+c_str() - Returns a C-string (const char*) version of the string.
+copy(dest, len, pos) - Copies a substring of length len starting from pos into a character array dest.
+find(str, pos) - Finds the first occurrence of str starting from position pos (returns npos if not found).
+rfind(str, pos) - Finds the last occurrence of str starting from position pos.
+find_first_of(str, pos) - Finds the first character from str that appears in the string, starting from pos.
+find_last_of(str, pos) - Finds the last character from str that appears in the string, starting from pos.
+find_first_not_of(str, pos) - Finds the first character that does not match any character in str, starting from pos.
+find_last_not_of(str, pos) - Finds the last character that does not match any character in str, starting from pos.
+substr(pos, len) - Returns a substring starting at pos with length len.
+compare(str) - Compares the string with another string str (returns 0 if equal, >0 if greater, <0 if less).
+
+6. Conversion Functions
+std::stoi(str) - Converts string str to an integer.
+std::stol(str) - Converts string str to a long.
+std::stoll(str) - Converts string str to a long long.
+std::stof(str) - Converts string str to a float.
+std::stod(str) - Converts string str to a double.
+std::stold(str) - Converts string str to a long double.
+
+7. Iterators
+begin() - Returns an iterator to the first character of the string.
+end() - Returns an iterator to the character following the last character of the string.
+rbegin() - Returns a reverse iterator to the last character of the string.
+rend() - Returns a reverse iterator to the position before the first character of the string.
+
+8. Relational Operators
+You can compare two strings using these operators:
+
+== - Check if two strings are equal.
+!= - Check if two strings are not equal.
+<, <=, >, >= - Lexicographical comparison between strings.
+
+9. I/O Functions
+getline(std::cin, str) - Reads a line of input into str.
+std::cout << str; - Outputs the string.
+Example
+Here’s an example that showcases various string methods:
+
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string s = "Hello, World!";
+    
+    // Accessing elements
+    std::cout << s[0] << std::endl;     // 'H'
+    std::cout << s.at(7) << std::endl;  // 'W'
+
+    // Modifying the string
+    s.append(" How are you?");
+    std::cout << s << std::endl;  // "Hello, World! How are you?"
+
+    // Finding and substring
+    size_t pos = s.find("World");
+    if (pos != std::string::npos) {
+        std::cout << "Found 'World' at position: " << pos << std::endl;
+    }
+
+    // Extracting a substring
+    std::string sub = s.substr(7, 5);  // "World"
+    std::cout << "Substring: " << sub << std::endl;
+
+    // Replacing a part of the string
+    s.replace(7, 5, "Universe");
+    std::cout << "Replaced string: " << s << std::endl;  // "Hello, Universe! How are you?"
+    
+    // Size of the string
+    std::cout << "Length: " << s.size() << std::endl;  // 26
+
+    return 0;
+}

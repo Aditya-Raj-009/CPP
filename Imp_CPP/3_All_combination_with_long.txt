@@ -1,0 +1,39 @@
+Data Type	Description
+
+long int	Long signed integer (standard form)
+unsigned long int	Long unsigned integer (no negative values)
+long long int	Long integer guaranteed to be at least 64 bits
+unsigned long long int	Unsigned long integer guaranteed to be at least 64 bits
+long double	Extended precision floating-point type
+
+Examples
+Here are some examples demonstrating the use of these types in C++:
+
+
+#include <iostream>
+#include <limits> // For numeric limits
+
+int main() {
+    long int myLong = 1234567890;
+    unsigned long int myUnsignedLong = 4294967295;
+    long long int myLongLong = 1234567890123456789;
+    unsigned long long int myUnsignedLongLong = 18446744073709551615U; // Maximum value for unsigned long long
+    long double myLongDouble = 3.141592653589793238462643383279502884L; // A long double value
+
+    std::cout << "Long Int: " << myLong << std::endl;
+    std::cout << "Unsigned Long Int: " << myUnsignedLong << std::endl;
+    std::cout << "Long Long Int: " << myLongLong << std::endl;
+    std::cout << "Unsigned Long Long Int: " << myUnsignedLongLong << std::endl;
+    std::cout << "Long Double: " << myLongDouble << std::endl;
+
+    return 0;
+}
+Conclusion
+The long keyword in C++ can be combined with various types to create larger integers or floating-point representations.
+These combinations are useful for handling larger numerical values or achieving higher precision in calculations.
+Always be mindful of the specific ranges and sizes of these types based on your platform and compiler.
+
+
+
+
+

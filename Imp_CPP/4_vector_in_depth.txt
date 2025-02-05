@@ -1,0 +1,472 @@
+Vectors in C++ are dynamic arrays provided by the Standard Template Library (STL). 
+They allow for the storage of elements in a contiguous block of memory but have the 
+advantage over standard arrays because they can resize dynamically during runtime.
+Let’s go into a deep dive on vectors in C++.
+
+1. Basic Syntax and Usage
+A std::vector is a part of the C++ STL and is defined under the <vector> header:
+
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> myVector;  // Declares an empty vector of integers
+    myVector.push_back(10);     // Adds element at the end of the vector
+    myVector.push_back(20);
+
+    for (int i : myVector) {
+        std::cout << i << " ";
+    }
+    return 0;
+}
+
+Output:
+
+10 20
+
+
+2. Internal Structure of Vector
+Vectors maintain a contiguous block of memory, meaning that each element is placed next to the previous one. When a vector runs out of space (its capacity), it reallocates memory to store more elements, which typically doubles the current capacity.
+
+Key properties of std::vector:
+
+Capacity: The total number of elements that the vector can hold before needing to reallocate memory.
+Size: The current number of elements in the vector.
+Memory reallocation involves:
+
+Allocating a larger chunk of memory.
+Copying the existing elements to the new memory.
+Deallocating the old memory.
+3. Member Functions
+Here are some important member functions of std::vector:
+
+Element Access
+at(size_type n): Returns a reference to the element at position n, with bounds checking (throws an exception if out of bounds).
+operator[]: Similar to at(), but without bounds checking.
+front(): Returns a reference to the first element.
+back(): Returns a reference to the last element.
+data(): Returns a pointer to the underlying array (since C++11).
+Capacity
+size(): Returns the number of elements.
+capacity(): Returns the number of elements that can be held in currently allocated memory.
+empty(): Returns whether the vector is empty.
+reserve(size_type n): Requests that the vector capacity be at least enough to contain n elements.
+shrink_to_fit(): Reduces capacity to fit the size.
+Modifiers
+push_back(const T& val): Adds a new element at the end.
+pop_back(): Removes the last element.
+insert(iterator position, const T& val): Inserts element val at position.
+erase(iterator position): Erases element at position.
+clear(): Removes all elements.
+resize(size_type n): Resizes the vector to contain n elements.
+swap(vector& x): Swaps content with another vector.
+4. Iterators
+Vectors in C++ support iterators, which allow you to traverse the elements.
+
+begin(): Returns an iterator to the first element.
+end(): Returns an iterator to the element following the last element.
+rbegin(): Returns a reverse iterator to the last element.
+rend(): Returns a reverse iterator to the element before the first element.
+
+Example using iterators:
+
+
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> myVector = {1, 2, 3, 4, 5};
+
+    // Iterate using an iterator
+    for (std::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    
+    return 0;
+}
+
+Output:
+
+1 2 3 4 5
+
+
+5. Capacity vs Size
+Size: The number of elements currently stored in the vector.
+Capacity: The amount of memory allocated for the vector, which may be larger than the number of elements. Capacity grows geometrically (typically doubles) when the vector needs more space.
+
+
+std::vector<int> myVector;
+std::cout << "Size: " << myVector.size() << " Capacity: " << myVector.capacity() << std::endl;
+myVector.push_back(1);
+std::cout << "Size: " << myVector.size() << " Capacity: " << myVector.capacity() << std::endl;
+
+Output:
+
+Size: 0 Capacity: 0
+Size: 1 Capacity: 1
+
+6. Memory Management
+Vectors automatically manage memory for you, but you can request specific behaviors:
+
+Reserve: Reserve allows you to preallocate memory, avoiding multiple reallocations as elements are added.
+
+std::vector<int> myVector;
+myVector.reserve(100);  // Preallocate memory for 100 elements
+
+
+Shrink to Fit: You can reduce the capacity of the vector to match its current size.
+
+myVector.shrink_to_fit();
+
+
+7. Performance Considerations
+Accessing elements: Accessing elements via operator[] or at() is constant time O(1) since vectors provide direct access to memory.
+
+Insertion/Deletion:
+
+Push back (push_back): Amortized constant time O(1) for adding elements at the end. If reallocation occurs, it takes O(n).
+Insertions at the beginning or middle take linear time O(n) since elements need to be shifted.
+Deletions from the middle or front also take linear time O(n) for the same reason.
+8. Passing Vectors to Functions
+When passing vectors to functions, you can pass by value, by reference, or by const reference to avoid unnecessary copying.
+
+Pass by value: Makes a copy of the vector (expensive).
+
+void foo(std::vector<int> vec) {
+    // vec is a copy of the original vector
+}
+
+Pass by reference: Modifies the original vector.
+
+void foo(std::vector<int>& vec) {
+    vec.push_back(42); // Modifies the original vector
+}
+
+Pass by const reference: When the function doesn’t need to modify the vector, 
+this is the most efficient method.
+
+void foo(const std::vector<int>& vec) {
+    // vec cannot be modified here
+}
+
+9. Vectors and Multidimensional Arrays
+You can create multidimensional vectors by nesting vectors within vectors. 
+For example, a 2D matrix:
+
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<std::vector<int>> matrix(3, std::vector<int>(3, 0));
+
+    matrix[0][0] = 1;
+    matrix[1][1] = 2;
+    matrix[2][2] = 3;
+
+    for (const auto& row : matrix) {
+        for (const auto& val : row) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
+    }
+    return 0;
+}
+
+Output:
+
+1 0 0 
+0 2 0 
+0 0 3
+
+
+10. Comparison with Arrays
+
+Feature 	               std::vector 	                    C-style array
+
+Size	                Dynamic, resizable	                Fixed at compile time
+Bounds Checking	        at() throws an exception on error	No bounds checking
+Performance	            Constant-time access	            Constant-time access
+Memory Management	    Automatic	Manual
+Additional Functions	Many member functions               Limited functionality
+                       (e.g., push_back(), resize(), etc.)	
+
+
+
+
+Here’s a detailed breakdown of all key member functions available in std::vector in C++ along with examples:
+
+1. push_back(): Adds an element to the end of the vector.
+     
+     
+std::vector<int> myVector;
+myVector.push_back(10);
+myVector.push_back(20);
+// myVector = {10, 20}
+2. pop_back(): Removes the last element from the vector.
+     
+     
+myVector.pop_back();  // Removes 20, myVector = {10}
+3. insert(): Inserts an element or multiple elements at a specified position.
+     
+     
+auto it = myVector.begin();
+myVector.insert(it, 5);  // Inserts 5 at the beginning, myVector = {5, 10}
+
+myVector.insert(it + 1, 3, 15);  // Inserts three 15s at position 1, myVector = {5, 15, 15, 15, 10}
+4. erase(): Removes one or more elements at a specific position.
+     
+     
+myVector.erase(it);  // Removes the first element, myVector = {15, 15, 15, 10}
+myVector.erase(myVector.begin() + 1, myVector.begin() + 3);  // Erases two elements, myVector = {15, 10}
+5. clear(): Removes all elements from the vector.
+     
+     
+myVector.clear();  // The vector is now empty
+6. size(): Returns the number of elements in the vector.
+     
+     
+std::cout << "Size: " << myVector.size() << std::endl;  // Output: 0
+7. empty(): Checks if the vector is empty.
+     
+     
+if (myVector.empty()) {
+    std::cout << "Vector is empty" << std::endl;
+}
+8. resize(): Resizes the vector to the specified size, adding elements if necessary.
+     
+     
+myVector.resize(5, 100);  // Resizes to 5 elements, each with value 100, myVector = {100, 100, 100, 100, 100}
+9. front(): Returns a reference to the first element.
+     
+     
+std::cout << myVector.front() << std::endl;  // Output: 100
+10. back(): Returns a reference to the last element.
+     
+     
+std::cout << myVector.back() << std::endl;  // Output: 100
+11. at(): Returns a reference to the element at the specified index with bounds checking.
+     
+     
+std::cout << myVector.at(2) << std::endl;  // Output: 100
+12. operator[]: Returns a reference to the element at the specified index without bounds checking.
+     
+     
+std::cout << myVector[2] << std::endl;  // Output: 100
+13. begin() and end(): Returns an iterator to the first and one past the last element.
+     
+     
+for (auto it = myVector.begin(); it != myVector.end(); ++it) {
+    std::cout << *it << " ";  // Output: 100 100 100 100 100
+}
+14. rbegin() and rend(): Returns a reverse iterator to the vector.
+     
+     
+for (auto rit = myVector.rbegin(); rit != myVector.rend(); ++rit) {
+    std::cout << *rit << " ";  // Output: 100 100 100 100 100
+}
+15. assign(): Assigns new contents to the vector.
+     
+     
+myVector.assign(3, 50);  // Fills the vector with three 50s, myVector = {50, 50, 50}
+16. swap(): Exchanges the contents of two vectors.
+     
+     
+std::vector<int> anotherVector = {1, 2, 3};
+myVector.swap(anotherVector);  // Now myVector = {1, 2, 3} and anotherVector = {50, 50, 50}
+17. capacity(): Returns the number of elements that the vector can hold before it needs to allocate more memory.
+     
+     
+std::cout << "Capacity: " << myVector.capacity() << std::endl;
+18. reserve(): Requests that the vector capacity be at least enough to contain n elements.
+     
+     
+myVector.reserve(10);  // Ensures myVector has enough capacity for 10 elements
+19. shrink_to_fit(): Reduces the capacity of the vector to fit its size.
+     
+     
+myVector.shrink_to_fit();  // Reduces capacity to fit the size of the vector
+20. emplace(): Constructs an element in-place at the specified position.
+     
+     
+myVector.emplace(myVector.begin(), 99);  // Inserts 99 at the beginning, myVector = {99, 1, 2, 3}
+21. emplace_back(): Constructs an element in-place at the end of the vector.
+     
+     
+myVector.emplace_back(200);  // Adds 200 to the end, myVector = {99, 1, 2, 3, 200}
+22. data(): Returns a direct pointer to the memory array used internally by the vector.
+     
+     
+int* ptr = myVector.data();
+std::cout << "First element: " << *ptr << std::endl;  // Output: 99
+
+
+Example Code Demonstrating Vector Functions
+     
+     
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> myVector;
+
+    // push_back
+    myVector.push_back(10);
+    myVector.push_back(20);
+    myVector.push_back(30);
+
+    // Display elements using iterator
+    cout << "Vector elements: ";
+    for (auto it = myVector.begin(); it != myVector.end(); ++it) {
+        cout << *it << " ";  // Output: 10 20 30
+    }
+    cout << endl;
+
+    // pop_back
+    myVector.pop_back();  // Removes 30, myVector = {10, 20}
+
+    // insert
+    auto it = myVector.begin();
+    myVector.insert(it, 5);  // Insert 5 at the beginning, myVector = {5, 10, 20}
+
+    // Display after insertion
+    cout << "After insertion: ";
+    for (int val : myVector) cout << val << " ";  // Output: 5, 10, 20
+    cout << endl;
+
+    // erase
+    myVector.erase(it);  // Erase the first element, myVector = {10, 20}
+
+    // resize
+    myVector.resize(5, 100);  // myVector = {10, 20, 100, 100, 100}
+
+    // Display after resize
+    cout << "After resize: ";
+    for (int val : myVector) cout << val << " ";  // Output: 10 20 100 100 100
+    cout << endl;
+
+    // size
+    cout << "Size of vector: " << myVector.size() << endl;  // Output: 5
+
+    // front and back
+    cout << "Front: " << myVector.front() << endl;  // Output: 10
+    cout << "Back: " << myVector.back() << endl;    // Output: 100
+
+    // at and []
+    cout << "Element at index 2: " << myVector.at(2) << endl;  // Output: 100
+    cout << "Element at index 3: " << myVector[3] << endl;     // Output: 100
+
+    // emplace
+    myVector.emplace(myVector.begin(), 50);  // Insert 50 at the beginning, myVector = {50, 10, 20, 100, 100, 100}
+
+    // Display after emplace
+    cout << "After emplace: ";
+    for (int val : myVector) cout << val << " ";  // Output: 50 10 20 100 100 100
+    cout << endl;
+
+    // clear
+    myVector.clear();  // Clears all elements
+
+    // empty
+    if (myVector.empty()) {
+        cout << "Vector is empty now." << endl;  // Output: Vector is empty now.
+    }
+
+    return 0;
+}
+
+Output:
+
+Vector elements: 10 20 30 
+After insertion: 5 10 20 
+After resize: 10 20 100 100 100 
+Size of vector: 5
+Front: 10
+Back: 100
+Element at index 2: 100
+Element at index 3: 100
+After emplace: 50 10 20 
+
+
+
+In C++, the std::transform algorithm is used to apply a function (or operation) to each element of one or two ranges and store the results in a destination range. It is part of the <algorithm> library and can be used in two primary forms:
+
+Unary transform: Applies a unary operation (a function or functor that takes a single argument) to each element in a range.
+Binary transform: Applies a binary operation (a function or functor that takes two arguments) to elements from two ranges.
+Syntax:
+
+
+// Unary transform
+std::transform(InputIt1 first1, InputIt1 last1, OutputIt d_first, UnaryOperation unary_op);
+
+// Binary transform
+std::transform(InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt d_first, BinaryOperation binary_op);
+first1, last1: The range of input elements to transform.
+first2: The beginning of the second range (for binary transform).
+d_first: The start of the output range where results are stored.
+unary_op or binary_op: The operation to be applied (can be a function pointer, lambda, or functor).
+Example 1: Unary std::transform
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm> // for std::transform
+
+using namespace std;
+
+int main() {
+    vector<int> vec = {1, 2, 3, 4, 5};
+    vector<int> result(vec.size());
+
+    // Using transform to apply a lambda function to double the elements
+    std::transform(vec.begin(), vec.end(), result.begin(), [](int x) { return x * 2; });
+
+    cout << "Result after unary transform: ";
+    for (int x : result) {
+        cout << x << " ";  // Output: 2 4 6 8 10
+    }
+    cout << endl;
+
+    return 0;
+}
+Example 2: Binary std::transform
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm> // for std::transform
+
+using namespace std;
+
+int main() {
+    vector<int> vec1 = {1, 2, 3, 4, 5};
+    vector<int> vec2 = {10, 20, 30, 40, 50};
+    vector<int> result(vec1.size());
+
+    // Using transform to add elements from two vectors
+    std::transform(vec1.begin(), vec1.end(), vec2.begin(), result.begin(),
+                   [](int x, int y) { return x + y; });
+
+    cout << "Result after binary transform: ";
+    for (int x : result) {
+        cout << x << " ";  // Output: 11 22 33 44 55
+    }
+    cout << endl;
+
+    return 0;
+}
+Explanation:
+Unary transform: In the first example, a lambda function is applied to each element of the vector vec to double its value, and the result is stored in result.
+Binary transform: In the second example, a binary operation (addition) is applied element-wise to two input vectors (vec1 and vec2), and the result is stored in result.
+Use Cases:
+Applying mathematical operations to elements of a container.
+Combining elements from two containers using binary operations like addition, subtraction, multiplication, etc.
+Performing data transformations, such as scaling, mapping, or filtering elements.
+The std::transform function is versatile and widely used for applying custom transformations in a functional programming style.
+
+
+
+
+
+

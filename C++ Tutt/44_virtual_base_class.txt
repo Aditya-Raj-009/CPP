@@ -1,0 +1,92 @@
+#include<iostream>
+using namespace std;
+
+/*
+Virtual Base class:
+
+A virtual base class in C++ is a concept used in multiple inheritance to solve the diamond problem.
+The diamond problem occurs when a class inherits from two classes that both inherit from a common base class.
+This can lead to ambiguity and redundancy, where the common base class is inherited multiple times by the final derived class.
+
+To prevent this, C++ provides a way to declare a base class as a virtual base class.
+This ensures that only one instance of the base class is inherited, regardless of how many paths lead to it through the inheritance hierarchy.
+
+Diamond Problem in C++
+Let's first understand the diamond problem with an example:
+
+// Base class
+class Animal {
+public:
+    void sound() {
+        cout << "Animal makes a sound." << endl;
+    }
+};
+
+// Derived class 1
+class Mammal : public Animal {
+};
+
+// Derived class 2
+class Bird : public Animal {
+};
+
+// Derived class 3 inheriting from both Mammal and Bird
+class Bat : public Mammal, public Bird {
+};
+
+int main() {
+    Bat bat;
+    // bat.sound(); // Error: Ambiguous call to sound()
+
+    return 0;
+}
+
+
+Explanation of the Diamond Problem:
+
+1) Class Animal: A base class with a member function sound().
+2) Classes Mammal and Bird: Both inherit from Animal.
+3) Class Bat: Inherits from both Mammal and Bird. This creates ambiguity because Bat has two copies of the Animal base class (one through Mammal and one through Bird).
+When we try to call bat.sound(), the compiler throws an error because it doesn't know which sound() function to call—Mammal's or Bird's.
+
+Solving the Diamond Problem with Virtual Base Classes
+To solve this issue, we declare Animal as a virtual base class when it is inherited by both Mammal and Bird. This ensures that only one copy of Animal exists in Bat.
+
+// Base class
+class Animal {
+public:
+    void sound() {
+        cout << "Animal makes a sound." << endl;
+    }
+};
+
+// Derived class 1 with virtual inheritance
+class Mammal : virtual public Animal {
+};
+
+// Derived class 2 with virtual inheritance
+class Bird : virtual public Animal {
+};
+
+// Derived class 3 inheriting from both Mammal and Bird
+class Bat : public Mammal, public Bird {
+};
+
+int main() {
+    Bat bat;
+    bat.sound(); // Works without ambiguity
+
+    return 0;
+}
+
+Explanation:
+Virtual Inheritance:
+
+Mammal and Bird classes inherit from Animal using the virtual keyword: class Mammal : virtual public Animal and class Bird : virtual public Animal.
+This tells the compiler to ensure that there is only one instance of Animal, even if it is inherited multiple times through different paths.
+Class Bat:
+
+When Bat inherits from both Mammal and Bird, it now contains only one instance of Animal due to virtual inheritance.
+The call bat.sound() is now unambiguous and works correctly.
+
+*/

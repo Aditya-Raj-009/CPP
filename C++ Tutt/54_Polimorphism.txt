@@ -1,0 +1,143 @@
+
+
+Polymorphism is one of the core concepts of Object-Oriented Programming (OOP) in C++. It allows objects to be treated as instances of their parent class, enabling a single interface to represent different underlying forms (data types). Polymorphism is mainly achieved through function overloading, operator overloading, and inheritance.
+
+Types of Polymorphism in C++
+1>  Compile-Time Polymorphism (Static Polymorphism)
+2>  Run-Time Polymorphism (Dynamic Polymorphism)
+
+
+Let's explore each type in detail.
+
+1. Compile-Time Polymorphism (Static Polymorphism)
+Compile-time polymorphism is achieved using function overloading and operator overloading. The function to be invoked is decided at compile time.
+
+a. Function Overloading
+Function overloading allows multiple functions with the same name but different parameters (number, type, or order) within the same scope. The compiler determines which function to call based on the arguments provided during the function call.
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+class Print {
+public:
+    // Overloaded function with an int parameter
+    void display(int i) {
+        cout << "Integer: " << i << endl;
+    }
+    
+    // Overloaded function with a double parameter
+    void display(double f) {
+        cout << "Double: " << f << endl;
+    }
+    
+    // Overloaded function with a string parameter
+    void display(string s) {
+        cout << "String: " << s << endl;
+    }
+};
+
+int main() {
+    Print obj;
+    obj.display(10);        // Calls display(int)
+    obj.display(10.5);      // Calls display(double)
+    obj.display("Hello");   // Calls display(string)
+    
+    return 0;
+}
+
+
+b. Operator Overloading
+Operator overloading allows operators (like +, -, *, etc.) to be
+redefined for user-defined types (classes). 
+The operator's meaning can change depending on its operands.
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+class Complex {
+private:
+    int real, imag;
+
+public:
+    Complex(int r = 0, int i = 0) : real(r), imag(i) {}
+
+    // Overloading the '+' operator
+    Complex operator + (const Complex& obj) {
+        Complex res;
+        res.real = real + obj.real;
+        res.imag = imag + obj.imag;
+        return res;
+    }
+
+    void display() {
+        cout << real << " + " << imag << "i" << endl;
+    }
+};
+
+int main() {
+    Complex c1(10, 5), c2(2, 4);
+    Complex c3 = c1 + c2; // Calls the overloaded '+' operator
+    c3.display(); // Output: 12 + 9i
+
+    return 0;
+}
+
+
+2. Run-Time Polymorphism (Dynamic Polymorphism)
+Run-time polymorphism is achieved using inheritance and virtual functions. The decision on which function to invoke is made at run time.
+
+a. Virtual Functions
+Virtual functions allow derived classes to override methods in base classes to provide specific functionality. When a derived class overrides a method, the base class's method is replaced by the derived class's version when accessed through a base class pointer or reference.
+
+Example:
+
+
+#include <iostream>
+using namespace std;
+
+// Base class
+class Animal {
+public:
+    virtual void sound() {  // Virtual function
+        cout << "Animal makes a sound" << endl;
+    }
+};
+
+// Derived class
+class Dog : public Animal {
+public:
+    void sound() override {  // Override base class function
+        cout << "Dog barks" << endl;
+    }
+};
+
+int main() {
+    Animal* animal; // Base class pointer
+    Dog dog;        // Derived class object
+
+    animal = &dog;  // Base class pointer points to derived class object
+    animal->sound(); // Calls the overridden function in the derived class
+
+    return 0;
+}
+
+
+How Virtual Functions Work
+The virtual keyword in the base class allows derived classes to override the function.
+When a function is called using a pointer or reference to the base class, the derived class's function is called instead, if it is overridden.
+This mechanism is made possible by using a vtable (virtual table) and vptr (virtual pointer) maintained by the compiler.
+
+
+Key Differences Between Compile-Time and Run-Time Polymorphism
+
+Feature	    Compile-Time Polymorphism	                   |  Run-Time Polymorphism
+
+Type	    Static (resolved at compile time)	           |  Dynamic (resolved at run time)
+How Achieved	Function overloading, operator overloading.| Virtual functions and inheritance
+Method Resolution	Done by the compiler at compile time.  | Done by the virtual table (vtable) at run time
+Performance	    Faster as it's resolved at compile time.   |  Slightly slower due to vtable lookup
+Flexibility	Less flexible; function signatures must differ.| More flexible; allows dynamic method binding

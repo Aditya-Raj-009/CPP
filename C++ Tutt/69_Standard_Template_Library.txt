@@ -1,0 +1,11 @@
+
+
+STL: Standard Template Library:
+
+Components of STL:
+
+1) Containers: Store data. eg: vector, etc. use template classes.
+2) Algorithm: sorting, searching, etc. use template methods.
+3) Iterators: object points to an elements in a container. Handle just like pointers.
+    connect algorithm with containers.
+

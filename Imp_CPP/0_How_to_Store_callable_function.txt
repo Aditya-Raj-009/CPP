@@ -1,0 +1,169 @@
+In C++, you can store callable objects (like regular functions, member functions, lambda functions, or function objects) in variables. You can do this using function pointers, std::function, and function objects. Here's how you can achieve that depending on the type of callable you want to store:
+
+1. Storing a Regular Function Using Function Pointers
+You can store the address of a regular function (free function) in a function pointer variable.
+
+Example:
+
+#include <iostream>
+
+// Regular function
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    // Storing function address in a pointer
+    int (*funcPtr)(int, int) = &add;
+
+    // Calling the function using the pointer
+    std::cout << "Sum: " << funcPtr(5, 3) << std::endl;  // Output: Sum: 8
+
+    return 0;
+}
+
+
+2. Storing a Callable Using std::function
+std::function is a more flexible way to store any callable object, including regular functions, lambda functions, or functors (objects that overload the operator()).
+
+Example:
+
+#include <iostream>
+#include <functional>
+
+// Regular function
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    // Storing a function using std::function
+    std::function<int(int, int)> func = add;
+
+    // Calling the function through std::function
+    std::cout << "Sum: " << func(5, 3) << std::endl;  // Output: Sum: 8
+
+    return 0;
+}
+
+3. Storing a Lambda Function
+Lambda functions can also be stored in a variable using auto or std::function. They can be inline and concise for small operations.
+
+Example using auto:
+
+#include <iostream>
+
+int main() {
+    // Defining and storing a lambda function in a variable
+    auto multiply = [](int a, int b) {
+        return a * b;
+    };
+
+    // Calling the lambda function
+    std::cout << "Product: " << multiply(4, 5) << std::endl;  // Output: Product: 20
+
+    return 0;
+}
+
+
+Example using std::function:
+
+#include <iostream>
+#include <functional>
+
+int main() {
+    // Storing a lambda function in std::function
+    std::function<int(int, int)> multiply = [](int a, int b) {
+        return a * b;
+    };
+
+    // Calling the lambda function
+    std::cout << "Product: " << multiply(4, 5) << std::endl;  // Output: Product: 20
+
+    return 0;
+}
+
+
+4. Storing a Functor (Function Object)
+
+A functor is a class or struct that overloads the operator(), making the object behave like a function.
+You can store and call functors like any other function.
+
+Example:
+
+ #include <iostream>
+
+// Functor (Function Object)
+struct Adder {
+    int operator()(int a, int b) {
+        return a + b;
+    }
+};
+
+int main() {
+    // Storing functor in a variable
+    Adder add;
+
+    // Calling the functor
+    std::cout << "Sum: " << add(5, 3) << std::endl;  // Output: Sum: 8
+
+    return 0;
+}
+
+
+5. Storing a Member Function Using Member Function Pointers
+If you want to store a member function of a class, you need to use a special syntax for member function pointers.
+
+Example:
+
+#include <iostream>
+
+class Calculator {
+public:
+    int add(int a, int b) {
+        return a + b;
+    }
+};
+
+int main() {
+    Calculator calc;
+
+    // Storing member function pointer
+    int (Calculator::*funcPtr)(int, int) = &Calculator::add;
+
+    // Calling the member function using the object and pointer
+    std::cout << "Sum: " << (calc.*funcPtr)(5, 3) << std::endl;  // Output: Sum: 8
+
+    return 0;
+}
+
+
+
+6. Storing Function Objects Using std::function (General Case)
+std::function can be used to store any type of callable, including lambdas, function pointers, and functors. This is a very flexible and generic way to handle any callable entity.
+
+Example:
+
+#include <iostream>
+#include <functional>
+
+// Functor (Function Object)
+struct Adder {
+    int operator()(int a, int b) {
+        return a + b;
+    }
+};
+
+int main() {
+    Adder add;
+
+    // Storing the functor in std::function
+    std::function<int(int, int)> func = add;
+
+    // Calling the functor through std::function
+    std::cout << "Sum: " << func(5, 3) << std::endl;  // Output: Sum: 8
+
+    return 0;
+}
+
+

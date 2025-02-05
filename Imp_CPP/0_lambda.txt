@@ -1,0 +1,222 @@
+Lambda expressions in C++ allow you to define anonymous functions (functions without a name) that can capture variables from the surrounding scope. They are commonly used to simplify code, especially when passing functions as arguments or when you need small, concise function objects.
+
+Syntax of a Lambda Expression
+A lambda expression in C++ has the following general syntax:
+
+[ capture_clause ] ( parameters ) -> return_type { body }
+
+[capture_clause]: Specifies which variables from the surrounding scope will be captured and how (by value or by reference).
+(parameters): The parameter list for the lambda, similar to a regular function.
+-> return_type: Optional, specifies the return type. C++ can often deduce the return type automatically.
+{body}: The function body where the code executes.
+
+Simple Example:
+
+#include <iostream>
+
+int main() {
+    // A simple lambda that takes no arguments and returns nothing
+    auto greet = []() {
+        std::cout << "Hello from lambda!" << std::endl;
+    };
+
+    greet();  // Calling the lambda function
+
+    return 0;
+}
+
+Capturing Variables
+You can capture variables from the surrounding scope either by value or by reference. This is useful when you want to use external variables inside the lambda.
+
+1. Capture by Value [=]:
+
+#include <iostream>
+
+int main() {
+    int x = 10;
+    auto lambda = [x]() {
+        std::cout << "Captured x by value: " << x << std::endl;
+    };
+
+    x = 20;  // Changing x in the outer scope has no effect inside the lambda
+    lambda();  // Output: Captured x by value: 10
+
+    return 0;
+}
+
+
+In this case, x is captured by value. Even if x changes outside the lambda, the lambda still holds the original value.
+
+2. Capture by Reference [&]:
+
+#include <iostream>
+
+int main() {
+    int x = 10;
+    auto lambda = [&x]() {
+        std::cout << "Captured x by reference: " << x << std::endl;
+    };
+
+    x = 20;  // Changing x in the outer scope affects the lambda
+    lambda();  // Output: Captured x by reference: 20
+
+    return 0;
+}
+
+When capturing by reference, any changes to x inside or outside the lambda will reflect in both places.
+
+3. Mixed Capturing:
+You can also mix captures by value and by reference for different variables.
+
+#include <iostream>
+
+int main() {
+    int x = 10, y = 20;
+
+    auto lambda = [x, &y]() {
+        std::cout << "x captured by value: " << x << std::endl;
+        std::cout << "y captured by reference: " << y << std::endl;
+    };
+
+    x = 30;  // Changing x won't affect the lambda
+    y = 40;  // Changing y will affect the lambda
+
+    lambda();  // Output: x captured by value: 10, y captured by reference: 40
+
+    return 0;
+}
+
+4. Capture All by Value [=]:
+To capture all variables from the surrounding scope by value, use [=].
+
+auto lambda = [=]() {
+    // All outer scope variables are captured by value
+};
+
+5. Capture All by Reference [&]:
+To capture all variables from the surrounding scope by reference, use [&].
+
+auto lambda = [&]() {
+    // All outer scope variables are captured by reference
+};
+
+Lambda with Parameters
+You can define parameters in a lambda, just like in a regular function.
+
+#include <iostream>
+
+int main() {
+    auto add = [](int a, int b) -> int {
+        return a + b;
+    };
+
+    std::cout << "Sum: " << add(5, 3) << std::endl;  // Output: Sum: 8
+
+    return 0;
+}
+
+
+Return Type of a Lambda
+C++ can often deduce the return type automatically, 
+but you can specify it explicitly using the -> operator.
+
+#include <iostream>
+
+int main() {
+    auto divide = [](int a, int b) -> double {
+        return static_cast<double>(a) / b;
+    };
+
+    std::cout << "Result: " << divide(5, 2) << std::endl;  // Output: Result: 2.5
+
+    return 0;
+}
+
+In most cases, the return type can be omitted, as the compiler can deduce it:
+
+auto add = [](int a, int b) {
+    return a + b;  // Compiler deduces return type as int
+};
+
+
+Mutable Lambdas
+
+By default, lambdas capture variables by value in a const manner, 
+meaning they cannot modify captured values. To allow modification, you need to mark the lambda as mutable.
+
+#include <iostream>
+
+int main() {
+    int x = 10;
+
+    auto lambda = [x]() mutable {
+        x += 5;  // Can modify x because the lambda is mutable
+        std::cout << "x inside lambda: " << x << std::endl;
+    };
+
+    lambda();  // Output: x inside lambda: 15
+    std::cout << "x outside lambda: " << x << std::endl;  // Output: x outside lambda: 10
+
+    return 0;
+}
+
+Without mutable, attempting to modify x would result in a compilation error.
+
+Lambdas as Arguments
+Lambdas are often used as arguments to functions, especially in algorithms.
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+int main() {
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+
+    // Lambda as a comparison function for std::find_if
+    auto it = std::find_if(vec.begin(), vec.end(), [](int n) {
+        return n > 3;
+    });
+
+    if (it != vec.end()) {
+        std::cout << "Found number greater than 3: " << *it << std::endl;
+    }
+
+    return 0;
+}
+
+
+Generic Lambdas (C++14 and Later)
+Since C++14, lambdas can be generic by using the auto keyword in their parameter list.
+
+#include <iostream>
+
+int main() {
+    auto print = [](auto value) {
+        std::cout << value << std::endl;
+    };
+
+    print(42);       // Output: 42
+    print(3.14);     // Output: 3.14
+    print("Hello");  // Output: Hello
+
+    return 0;
+}
+
+Lambda Expressions with std::function
+For more flexibility, you can store lambdas in std::function, 
+which allows you to pass and store callable objects that match a specific signature.
+
+#include <iostream>
+#include <functional>
+
+int main() {
+    std::function<int(int, int)> add = [](int a, int b) {
+        return a + b;
+    };
+
+    std::cout << "Sum: " << add(5, 3) << std::endl;  // Output: Sum: 8
+
+    return 0;
+}
+
+

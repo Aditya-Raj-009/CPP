@@ -1,0 +1,224 @@
+
+
+/*
+The order of execution of constructor in heritance:
+
+In single inheritance:
+If A inherit from B : 
+class A: public B{
+
+// Always constructor of Base class call first then Derived class.
+};
+
+In multiple inheritance:
+class A : public B, public C{
+// execution of constructor depends on the order by which class A inherit its base class.
+// here class A inherit first B then C, so constructor of B execute first,
+// then constructor of C execute and at last constructor of A execute.
+};
+
+In multilevel inheritance:
+class A{};
+class B: public A{
+};
+class C: public B{};
+
+here constructor will execute in level:
+first constructor of A execute.
+then constructor of B execute.
+then at last constructor of C execute.
+
+
+
+virtual base class constructor calls first always:
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    A() {
+        cout << "Constructor of Base class A called." << endl;
+    }
+};
+
+class B : virtual public A {  // Virtual inheritance
+public:
+    B() {
+        cout << "Constructor of Derived class B called." << endl;
+    }
+};
+
+class C : virtual public A {  // Virtual inheritance
+public:
+    C() {
+        cout << "Constructor of Derived class C called." << endl;
+    }
+};
+
+class D : public B, public C {
+public:
+    D() {
+        cout << "Constructor of Derived class D called." << endl;
+    }
+};
+
+int main() {
+    D obj;  // Creating an object of derived class D
+    return 0;
+}
+
+output:
+
+Constructor of Base class A called.
+Constructor of Derived class B called.
+Constructor of Derived class C called.
+Constructor of Derived class D called.
+
+
+with parameter :
+
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    // Parameterized constructor for base class A
+    A(int x) {
+        cout << "Constructor of Base class A called with value: " << x << endl;
+    }
+};
+
+class B : virtual public A {
+public:
+    // Constructor of derived class B with explicit call to A's constructor
+    B(int x) : A(x) {
+        cout << "Constructor of Derived class B called." << endl;
+    }
+};
+
+class C : virtual public A {
+public:
+    // Constructor of derived class C with explicit call to A's constructor
+    C(int x) : A(x) {
+        cout << "Constructor of Derived class C called." << endl;
+    }
+};
+
+class D : public B, public C {
+public:
+    // Constructor of derived class D with explicit call to A's constructor
+    D(int x, int y, int z) : A(x), B(y), C(z) {
+        cout << "Constructor of Derived class D called." << endl;
+    }
+};
+
+int main() {
+    D obj(10, 20, 30);  // Creating an object of derived class D
+    return 0;
+}
+
+output:
+
+Constructor of Base class A called with value: 10
+Constructor of Derived class B called.
+Constructor of Derived class C called.
+Constructor of Derived class D called.
+
+
+
+By changing the order of call:
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    A(int x) {
+        cout << "Constructor of Base class A called with value: " << x << endl;
+    }
+};
+
+class B : virtual public A {
+public:
+    B(int x) : A(x) {  // Calling A's constructor with x
+        cout << "Constructor of Derived class B called." << endl;
+    }
+};
+
+class C : virtual public A {
+public:
+    C(int x) : A(x) {  // Calling A's constructor with x
+        cout << "Constructor of Derived class C called." << endl;
+    }
+};
+
+class D : public B, public C {
+public:
+    D(int x, int y, int z) : B(y), C(z), A(x) {  // Changing the order here
+        cout << "Constructor of Derived class D called." << endl;
+    }
+};
+
+int main() {
+    D obj(10, 20, 30);  // Creating an object of derived class D
+    return 0;
+}
+
+output:
+
+Constructor of Base class A called with value: 10
+Constructor of Derived class B called.
+Constructor of Derived class C called.
+Constructor of Derived class D called.
+
+
+without explicit call to constructor A in D:
+
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    A(int x) {
+        cout << "Constructor of Base class A called with value: " << x << endl;
+    }
+};
+
+class B : virtual public A {
+public:
+    B(int x) : A(x) {  // Calling A's constructor with x
+        cout << "Constructor of Derived class B called." << endl;
+    }
+};
+
+class C : virtual public A {
+public:
+    C(int x) : A(x) {  // Calling A's constructor with x
+        cout << "Constructor of Derived class C called." << endl;
+    }
+};
+
+class D : public B, public C {
+public:
+    D(int x, int y, int z) : B(y), C(z) {  // No explicit call to A(x) here
+        cout << "Constructor of Derived class D called." << endl;
+    }
+};
+
+int main() {
+    D obj(10, 20, 30);  // Creating an object of derived class D
+    return 0;
+}
+
+output:
+
+Constructor of Base class A called with value: 20
+Constructor of Derived class B called.
+Constructor of Derived class C called.
+Constructor of Derived class D called.
+
+
+*/

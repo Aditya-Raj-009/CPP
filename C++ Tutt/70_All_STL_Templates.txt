@@ -1,0 +1,142 @@
+All Standard template library in cpp:
+
+
+The Standard Template Library (STL) in C++ is a powerful collection of template-based data structures and algorithms that allow for efficient and flexible programming. The STL consists of four main components:
+
+Containers: Data structures that store objects.
+Iterators: Objects that point to elements in containers.
+Algorithms: Functions that perform operations on containers.
+Functors: Function objects used to define custom operations.
+
+
+1. Containers
+Containers in the STL are data structures that store collections of data. They can be divided into three categories: sequence containers, associative containers, and container adapters.
+
+a. Sequence Containers
+These containers store data in a linear sequence.
+
+Container	Description
+vector	Dynamic array that can resize itself when new elements are added. Random access is fast.
+deque	Double-ended queue allowing insertion and deletion from both ends.
+list	Doubly linked list that allows fast insertion and deletion from any position.
+forward_list	Singly linked list, offering lower memory overhead than list.
+array	Fixed-size array (C++11) with elements stored contiguously.
+string	Sequence of characters (like an array), but with string manipulation functions.
+
+
+b. Associative Containers
+These containers store elements in key-value pairs and use sorted data structures (usually trees) to allow fast search, insertion, and deletion.
+
+Container	Description
+set	Collection of unique elements, sorted by key.
+multiset	Like set, but allows duplicate elements.
+map	    Associative array that stores key-value pairs with unique keys.
+multimap	Like map, but allows duplicate keys.
+
+
+c. Unordered Associative Containers
+These containers store elements in key-value pairs but use hash tables, making them more efficient for search, insertion, and deletion in certain cases (unsorted).
+
+Container	Description
+unordered_set	Like set, but with hash table-based storage (no ordering).
+unordered_multiset	Like multiset, but with hash table-based storage.
+unordered_map	Like map, but with hash table-based storage.
+unordered_multimap	Like multimap, but with hash table-based storage.
+
+
+d. Container Adapters
+These containers are wrappers around other containers to provide a different interface.
+
+Container	Description
+stack	Provides LIFO (Last In First Out) access to elements.
+queue	Provides FIFO (First In First Out) access to elements.
+priority_queue	Provides access to elements based on priority (highest first).
+
+
+2. Iterators
+Iterators are objects that point to elements in containers and allow for traversal of container elements. They provide a uniform way to access elements regardless of the underlying container type.
+
+Type	Description
+InputIterator	Reads elements in a container sequentially (only forward).
+OutputIterator	Writes elements in a container sequentially.
+ForwardIterator	Reads and writes sequentially in a forward direction.
+BidirectionalIterator	Reads and writes sequentially in both forward and backward directions.
+RandomAccessIterator	Allows access to any element in constant time (like an array index).
+
+
+3. Algorithms
+Algorithms are a collection of functions that work on containers. They are designed to be generic and can be used with any container type, as long as they support the required iterators.
+
+Here are some of the most common algorithms provided by the STL:
+
+a. Non-modifying Sequence Algorithms
+These algorithms perform operations on containers without modifying the elements.
+
+Algorithm	Description
+for_each	Applies a function to each element in a range.
+find	Finds the first occurrence of a value in a range.
+count	Counts occurrences of a value in a range.
+equal	Checks if two ranges are equal.
+search	Searches for a subsequence within a range.
+
+
+b. Modifying Sequence Algorithms
+These algorithms modify the elements in a container.
+
+Algorithm	Description
+copy	Copies elements from one range to another.
+fill	Fills a range with a specific value.
+transform	Applies a function to each element in a range and stores the result.
+replace	Replaces all occurrences of a value in a range with another value.
+remove	Removes all occurrences of a value from a range (logically removes).
+
+
+c. Sorting and Searching Algorithms
+These algorithms are used to sort and search data within containers.
+
+Algorithm	Description
+sort	Sorts elements in a range.
+stable_sort	Sorts while maintaining relative order of equal elements.
+binary_search	Searches for an element in a sorted range using binary search.
+lower_bound	Finds the first position where a value can be inserted without breaking order.
+upper_bound	Finds the last position where a value can be inserted without breaking order.
+
+
+d. Set Algorithms
+These algorithms perform set operations on sorted ranges.
+
+Algorithm	Description
+set_union	Computes the union of two sorted ranges.
+set_intersection	Computes the intersection of two sorted ranges.
+set_difference	Computes the difference between two sorted ranges.
+
+
+e. Heap Algorithms
+These algorithms operate on heap structures (priority queues).
+
+Algorithm	Description
+make_heap	Converts a range into a heap.
+push_heap	Adds an element to a heap.
+pop_heap	Removes the largest element from a heap.
+sort_heap	Sorts a heap.
+
+
+4. Functors (Function Objects)
+Functors, also called function objects, are objects that can be used as though they are functions. In C++, this is typically done by overloading the operator().
+
+Example: You can define custom functors that can be passed to algorithms like sort for custom sorting behavior.
+
+struct Compare {
+    bool operator()(int a, int b) {
+        return a > b; // Sort in descending order
+    }
+};
+
+std::vector<int> vec = {1, 2, 3, 4, 5};
+std::sort(vec.begin(), vec.end(), Compare()); // Use custom comparator
+
+Summary of the STL Components:
+Containers: Data structures like vector, list, map, etc.
+Iterators: Tools for traversing and manipulating container elements.
+Algorithms: Predefined operations like sort, find, and transform.
+Functors: Custom function-like objects used with algorithms.

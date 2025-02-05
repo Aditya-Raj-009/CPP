@@ -1,0 +1,93 @@
+Templates in C++: (Similar to generic in Java.)
+
+Templates are a powerful feature in C++ that enable generic programming, allowing functions and classes to work with various data types without explicit type casting.
+
+Why Templates?
+
+1. Code Reusability: Write code once, use it with multiple types.
+2. Type Safety: Compile-time checks ensure correct type usage.
+3. Efficiency: No runtime overhead due to type casting.
+
+Function Templates
+
+
+template <typename T>
+T max(T a, T b) {
+    return (a > b) ? a : b;
+}
+
+int main() {
+    int result1 = max(5, 10);  // int
+    double result2 = max(3.5, 7.8);  // double
+    return 0;
+}
+
+
+Class Templates
+
+
+template <typename T>
+class Container {
+    T value;
+public:
+    Container(T val) : value(val) {}
+    T getValue() { return value; }
+};
+
+int main() {
+    Container<int> intContainer(5);
+    Container<double> doubleContainer(3.14);
+    return 0;
+}
+
+
+Template Parameters
+
+- typename T (or class T): Type parameter.
+- template <int N>: Non-type parameter (e.g., array size).
+
+Template Specialization
+
+- Define customized implementations for specific types.
+
+
+template <>
+class Container<bool> {
+    // Specialized implementation for bool
+};
+
+
+Template Metaprogramming
+
+- Perform computations at compile-time.
+
+
+template <int N>
+struct Factorial {
+    enum { value = N * Factorial<N-1>::value };
+};
+
+template <>
+struct Factorial<0> {
+    enum { value = 1 };
+};
+
+int main() {
+    int result = Factorial<5>::value;  // 120
+    return 0;
+}
+
+
+Best Practices
+
+1. Use meaningful template parameter names.
+2. Document template parameters and usage.
+3. Use typename instead of class for type parameters.
+4. Avoid complex template metaprogramming.
+
+Common Pitfalls
+
+1. Template instantiation errors.
+2. Template specialization conflicts.
+3. Overuse of template metaprogramming.
+

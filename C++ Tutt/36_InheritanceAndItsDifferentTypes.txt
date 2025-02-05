@@ -1,0 +1,8 @@
+/**
+ * Four form of Inheritance in C++:
+ * Single Inheritance: A->B (A: base class and B: Derive class.)
+ * Multiple Inheritance : A,B -> C (C can inherit both A and B).
+ * Hierarchical Inheritance: A and B both inherit C.
+ * Multilevel Inheritance. A inherit B , B inherit C and so on.
+ * Hybrid Inheritance: (Multiple + Multilevel Inheritance).
+*/

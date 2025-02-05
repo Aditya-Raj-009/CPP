@@ -1,0 +1,98 @@
+Typecasting in C++ refers to converting a variable from one type to another. C++ supports several types of typecasting, which can be broadly categorized into implicit and explicit typecasting. Here’s a breakdown of the types and examples for each:
+
+1. Implicit Typecasting (Automatic Conversion)
+This happens automatically when C++ converts one type to another without the programmer's explicit instructions. It's often referred to as "automatic type conversion."
+
+It usually occurs in assignments, function calls, and expressions where one type needs to be converted to another.
+
+ 
+ 
+int a = 10;
+double b = a;  // `int` is automatically converted to `double`
+2. Explicit Typecasting (Manual Conversion)
+In C++, explicit typecasting is done using several casting operators. The four main C++ casting operators are:
+
+a) C-style Cast
+The C-style cast is the most basic form of casting, using syntax (new_type) expression.
+
+It combines the functionality of static_cast, const_cast, and reinterpret_cast.
+
+However, it’s not type-safe and is generally not recommended in modern C++.
+
+ 
+ 
+double x = 3.14;
+int y = (int)x;  // C-style cast from `double` to `int`
+
+
+b) static_cast
+This is used for most standard type conversions.
+
+It performs conversions between related types, like int to double, pointers of base and derived classes (in safe cases), etc.
+
+It’s safer than a C-style cast as it can catch some errors at compile time.
+
+ 
+ 
+double x = 3.14;
+int y = static_cast<int>(x);  // Converts `double` to `int`
+ 
+ 
+class Base {};
+class Derived : public Base {};
+Derived d;
+Base* b = static_cast<Base*>(&d);  // Base-to-derived pointer conversion
+
+
+c) const_cast
+Used to add or remove the const qualifier from a variable.
+
+Only applies to pointers or references, and should be used cautiously as modifying a const variable can lead to undefined behavior.
+
+ 
+ 
+const int a = 10;
+int* b = const_cast<int*>(&a);  // Removes constness from `a`
+*b = 20;  // Modifying `a` through `b` is undefined behavior
+
+
+d) reinterpret_cast
+Used for low-level casting, where you need to cast one type into a completely unrelated type.
+
+Commonly used for casting pointers to different types, but it’s inherently unsafe and should be avoided unless necessary.
+
+ 
+ 
+int a = 65;
+char* p = reinterpret_cast<char*>(&a);  // Interprets `int` pointer as `char` pointer
+cout << *p << endl;  // May output 'A' on most systems
+
+
+e) dynamic_cast
+Used primarily with pointers or references to polymorphic base classes (i.e., classes with virtual functions).
+
+It performs a safe downcasting at runtime and returns nullptr if the cast fails (for pointers) or throws a bad_cast exception (for references).
+
+    
+class Base { virtual void func() {} };
+class Derived : public Base {};
+Base* b = new Derived;
+
+Derived* d = dynamic_cast<Derived*>(b);  // Downcast base pointer to derived pointer
+if (d) {
+    cout << "Casting succeeded." << endl;
+} else {
+    cout << "Casting failed." << endl;
+}
+
+
+Summary Table of Casts
+Cast Type	        Use Case	                                                Example
+
+C-style cast	    Simple, combines all types of casting	                    (int)x
+static_cast	        Standard conversions (e.g., int to double, safe hierarchy)	static_cast<int>(x)
+const_cast	        Adds or removes const qualifier	                            const_cast<int*>(&a)
+reinterpret_cast	Low-level cast between unrelated types	                    reinterpret_cast<char*>(&a)
+dynamic_cast	    Safe downcasting in class hierarchies	                    dynamic_cast<Derived*>(base_ptr)
+
+In general, use casting sparingly, and prefer C++-style casts (static_cast, const_cast, etc.) over C-style casts for better type safety and readability.

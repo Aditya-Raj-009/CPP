@@ -1,0 +1,140 @@
+Exceptions in C++ are a mechanism for handling runtime errors or unusual conditions that disrupt the normal flow of a program. C++ provides a way to handle such errors using try, throw, and catch blocks. Here's a breakdown of how exceptions work in C++:
+
+Basics of Exception Handling
+try Block: This block contains code that might throw an exception. If an exception occurs, control is passed to the appropriate catch block.
+
+throw Statement: When an error occurs, a throw statement is used to signal (or "throw") an exception. This statement can throw a value (e.g., an integer, string, or object) that represents the error.
+
+catch Block: This block catches exceptions thrown by the throw statement. Each catch block specifies a type, and it will handle exceptions of that type (or compatible types).
+
+Example
+Here’s a basic example to demonstrate exception handling:
+
+ 
+ 
+#include <iostream>
+using namespace std;
+
+int divide(int a, int b) {
+    if (b == 0) {
+        throw "Division by zero error!";  // Throw an exception if divisor is zero
+    }
+    return a / b;
+}
+
+int main() {
+    int x = 10, y = 0, result;
+
+    try {
+        result = divide(x, y);  // This will throw an exception
+        cout << "Result: " << result << endl;
+    } catch (const char* e) {  // Catch exception of type `const char*`
+        cout << "Caught exception: " << e << endl;
+    }
+
+    return 0;
+}
+Output:
+
+vbnet
+ 
+Caught exception: Division by zero error!
+In this example:
+
+divide throws an exception when y is 0.
+The main function has a try block that calls divide, and a catch block to handle the exception.
+Types of Exceptions
+In C++, you can throw exceptions of any type, such as:
+
+Primitive types: throw 5; or throw "Error";
+Standard exceptions: C++ provides several built-in exceptions (in <stdexcept>), like std::out_of_range, std::invalid_argument, std::runtime_error, etc.
+Custom exceptions: You can define your own exception classes.
+Standard Exception Classes
+The C++ Standard Library provides a set of exception classes that are derived from the base class std::exception. Here are a few commonly used ones:
+
+ 
+ 
+#include <iostream>
+#include <stdexcept>  // For standard exceptions
+using namespace std;
+
+int main() {
+    try {
+        throw runtime_error("Runtime error occurred!");  // Throws a standard exception
+    } catch (const runtime_error &e) {  // Catches runtime_error
+        cout << "Caught exception: " << e.what() << endl;
+    } catch (const exception &e) {  // Catches any other standard exception
+        cout << "Caught a generic exception: " << e.what() << endl;
+    }
+
+    return 0;
+}
+Output:
+
+go
+ 
+Caught exception: Runtime error occurred!
+In this example:
+
+runtime_error is a type of standard exception. Calling e.what() returns an error message.
+Custom Exception Classes
+You can create your own exception class by inheriting from std::exception and overriding the what() method.
+
+ 
+ 
+#include <iostream>
+#include <exception>
+using namespace std;
+
+class MyException : public exception {
+public:
+    const char* what() const noexcept override {  // Override what() method
+        return "My custom exception occurred!";
+    }
+};
+
+int main() {
+    try {
+        throw MyException();  // Throws custom exception
+    } catch (const MyException &e) {
+        cout << e.what() << endl;
+    }
+
+    return 0;
+}
+Output:
+
+vbnet
+ 
+My custom exception occurred!
+Exception Specifications (C++11 and Later)
+In C++11, noexcept specifies that a function does not throw exceptions. If an exception is thrown from a noexcept function, std::terminate() is called.
+
+ 
+ 
+void myFunc() noexcept {  // Guaranteed not to throw
+    // Function code
+}
+Key Points to Remember
+Order of catch blocks: catch blocks should be ordered from more specific to more general exceptions. If a base class exception is caught first, it will catch derived exceptions as well.
+
+Rethrowing Exceptions: You can rethrow an exception caught in a catch block using throw; with no arguments.
+
+ 
+ 
+try {
+    try {
+        throw runtime_error("Error!");
+    } catch (...) {
+        cout << "Caught in inner try, rethrowing..." << endl;
+        throw;  // Rethrows the caught exception
+    }
+} catch (const runtime_error &e) {
+    cout << "Caught in outer try: " << e.what() << endl;
+}
+Exception Handling Best Practices:
+
+Use exceptions for exceptional cases, not for regular control flow.
+Always catch exceptions by reference (e.g., catch(const exception& e)).
+Avoid catching exceptions that you cannot handle or recover from.
+C++ exceptions provide a powerful and flexible way to handle errors in programs, promoting a cleaner separation between error-handling and regular code.
